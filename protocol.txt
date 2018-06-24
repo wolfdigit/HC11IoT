@@ -1,0 +1,8 @@
+variuos length
+
+#33,P,12,ACT,payload\n
+
+# node, packetid, sensor id, action, payload \n
+
+
+action: present, update, do, req, ack = {P, U, D, R, A}
