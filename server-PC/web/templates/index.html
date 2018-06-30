@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Sensor Nodes</h2>
+<div class="col-md-offset-2 col-md-8" style="text-align:right"><a href="/static/blockly/index.html" target="_blank">Graphical editor</a></div>
+<div class="table-responsive col-md-8 col-md-offset-2">
+ <table class="table table-hover table-striped">
+  <thead>
+   <tr>
+    <th>Node</th>
+    <th>Sensor</th>
+    <th>Last Value</th>
+    <th>Description</th>
+    <th>Last Seen</th>
+   </tr>
+  </thead>
+  <tbody>
+   {% for e in data | sort(attribute='nodeId') %}
+    <tr>
+      <td>{{ e.nodeId }}</td>
+      <td>{{ e.sensorId }}</td>
+      <td id="val-{{ e.nodeId }}-{{ e.sensorId }}" style="cursor:pointer">{{ e.value }}</td>
+      <script>
+        $('#val-{{e.nodeId}}-{{e.sensorId}}').click(function(e){
+            var id="{{e.nodeId}}-{{e.sensorId}}";
+            console.log(id);
+            var val=$('#val-'+id).text();
+            $('#val-'+id).html('<input id="edit-'+id+'" value="'+val+'"/>');
+            $('#edit-'+id)
+              .focusout(function() {
+                var val = $('#edit-'+id).val();
+                console.log(val);
+                $.post("act/{{e.nodeId}}/{{e.sensorId}}", {'val': val});
+                $('#val-'+id).html(val);
+              })
+              .keypress(function(e) {
+                if (e.which==13) {
+                  $('#edit-'+id).trigger('focusout');
+                }
+              })
+              .click(function(){return false;})
+              .focus();
+        });
+      </script>
+      <td>{{ e.desc }}</td>
+      <td>{{ e.lastSeen | timestamp2date }}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+ </table>
+</div>
+{% endblock %}

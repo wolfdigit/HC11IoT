@@ -20,6 +20,7 @@ void present(int nodeId, int sensorId, String desc) {
   packetId[0] += random(1,26);
   String msg = formatMsg(nodeId, packetId, sensorId, "P", desc);
   Serial1.write(msg.c_str(), msg.length());
+  delay(50);
 }
 void present(int sensorId, String desc) {
   present(NODEID, sensorId, desc);
@@ -30,6 +31,7 @@ void update(int nodeId, int sensorId, String value) {
   packetId[0] += random(1,26);
   String msg = formatMsg(nodeId, packetId, sensorId, "U", value);
   Serial1.write(msg.c_str(), msg.length());
+  delay(50);
 }
 void update(int sensorId, String value) {
   update(NODEID, sensorId, value);
@@ -40,10 +42,28 @@ void update(int nodeId, int sensorId, int value) {
 void update(int sensorId, int value) {
   update(NODEID, sensorId, value);
 }
-void update(int nodeId, int sensorId, float value) {
+void update(int nodeId, int sensorId, unsigned int value) {
   update(nodeId, sensorId, String(value));
 }
-void update(int sensorId, float value) {
+void update(int sensorId, unsigned int value) {
+  update(NODEID, sensorId, value);
+}
+void update(int nodeId, int sensorId, long int value) {
+  update(nodeId, sensorId, String(value));
+}
+void update(int sensorId, long int value) {
+  update(NODEID, sensorId, value);
+}
+void update(int nodeId, int sensorId, unsigned long int value) {
+  update(nodeId, sensorId, String(value));
+}
+void update(int sensorId, unsigned long int value) {
+  update(NODEID, sensorId, value);
+}
+void update(int nodeId, int sensorId, double value) {
+  update(nodeId, sensorId, String(value));
+}
+void update(int sensorId, double value) {
   update(NODEID, sensorId, value);
 }
 
@@ -102,7 +122,7 @@ Message receive(int nodeId=NODEID) {
   Message retv = Message();
 
   unsigned long startT = millis();
-  while (millis()-startT<100) {
+  while (millis()-startT<50) {
     while (Serial1.available()>0) {
       int c = Serial1.read();
       if (c=='#') {
@@ -127,6 +147,6 @@ Message receive(int nodeId=NODEID) {
 
 #define COMBINE(X,Y) X##Y
 #define _tVar(line) COMBINE(_timer,line)
-#define forEvery(_t) static unsigned long _tVar(__LINE__) = 0; if ( millis()-_tVar(__LINE__)>=_t&&((_tVar(__LINE__)=millis())||1) )
+#define forEvery(_t) static unsigned long _tVar(__LINE__) = -_t; if ( millis()-_tVar(__LINE__)>=_t&&((_tVar(__LINE__)=millis())||1) )
 
 #endif  // _SIMPLERF_H_
