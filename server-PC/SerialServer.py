@@ -24,7 +24,7 @@ class SerialServer(Thread):
                 #continue
             if msg.isValid():
                 self._log.info('recv pack: {0}'.format(msg.__str__()))
-                print msg
+                print "recv {0}: node:{1}, sensor:{2}, val:{3}".format(msg.action, msg.nodeId, msg.sensorId, msg.payload)
                 self.parseIncoming(msg)
 
     def stop(self):
@@ -44,6 +44,7 @@ class SerialServer(Thread):
             actions = userLogic.onChange(msg.nodeId, msg.sensorId, msg.valueFloat, SimpleRF.db.get())
         except:
             self._log.debug('userLogic fail!!!')
+            print 'userLogic fail!!!'
             return
         try:
             for line in actions.splitlines():
@@ -51,7 +52,9 @@ class SerialServer(Thread):
                 self.do(tok[0], tok[1], tok[2])
         except:
             self._log.debug('userLogic action error... action=[{0}]'.format(actions))
+            print 'userLogic action error... action=[{0}]'.format(actions)
 
     def do(self, nodeId, sensorId, value):
         self._log.info("userLogic action: {0}-{1} := {2}".format(nodeId, sensorId, value))
+        print "userLogic action: node{0}-sensor{1} := {2}".format(nodeId, sensorId, value)
         SimpleRF.action(nodeId, sensorId, value)

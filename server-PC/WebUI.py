@@ -26,6 +26,7 @@ def index():
 def act(node, sensor):
     val = request.form['val']
     _log.info("web action: {0}-{1} := {2}".format(node, sensor, val))
+    print "web action: node{0}-sensor{1} := {2}".format(node, sensor, val)
     SimpleRF.action(node, sensor, val)
     return "0|OK"
 
