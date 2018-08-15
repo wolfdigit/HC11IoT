@@ -7,7 +7,7 @@ void setup() {
 }
 
 void presentation() {
-  present(1, "output");
+  present(1, "millisecond");
   present(2, "LED13");
 }
 
