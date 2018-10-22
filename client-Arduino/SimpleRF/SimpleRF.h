@@ -147,6 +147,6 @@ Message receive(int nodeId=NODEID) {
 
 #define COMBINE(X,Y) X##Y
 #define _tVar(line) COMBINE(_timer,line)
-#define forEvery(_t) static unsigned long _tVar(__LINE__) = -_t; if ( millis()-_tVar(__LINE__)>=_t&&((_tVar(__LINE__)=millis())||1) )
+#define setInterval(_t) static unsigned long _tVar(__LINE__) = -_t; if ( millis()-_tVar(__LINE__)>=_t&&((_tVar(__LINE__)=millis())||1) )
 
 #endif  // _SIMPLERF_H_

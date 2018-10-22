@@ -12,11 +12,11 @@ void presentation() {
 }
 
 void loop() {
-  forEvery(60000) {
+  setInterval(60000) {
     presentation();
   }
   
-  forEvery(3000) {
+  setInterval(3000) {
     update(1, millis());
   }
 
